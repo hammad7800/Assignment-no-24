@@ -1,27 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Todo App</title>
-    </head>
-    <body style=" background-color: gray ;border: 2px solid goldenrod; width: 450px; justify-content: center; text-align: center;" >
-       
-        
-        <h1 style="font-family: Arial, Helvetica, sans-serif;font-size: 40px;text-align: center; margin: 10px; text-decoration: underline black; color: cadetblue;" >Todo List</h1>
-        <div style="text-align: center;">
-            <br>
-            <br>
-            <input placeholder="Enter items.." id="todoInput" type="text" style=" border-radius:40px white; width: 200px;height: 30px;">
-            <br>
-            <br>
-            <button style="background-color:  black; border-radius: 20px; color: whitesmoke;" onclick="addTodo()">Add items</button>
-            <br>
-            <br>
-            <button style="background-color: black; color: whitesmoke; border-radius: 20px;" onclick="deleteAllItems()">Delete All items</button>
+<head>
+  <meta charset="UTF-8" />
+  <title>Todo App</title>
 
-        </div>
-        <ul id="list" ></ul>
-        <script src="app.js"></script>
-    </body>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyAnOvQneBDlLB-IkVXq8BSaXms67Zuk99c",
+      authDomain: "database-1f708.firebaseapp.com",
+      databaseURL: "https://database-1f708-default-rtdb.firebaseio.com",
+      projectId: "database-1f708",
+      storageBucket: "database-1f708.appspot.com",
+      messagingSenderId: "649919887844",
+      appId: "1:649919887844:web:cf4ac6413fabef30adeff1"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+
+<body style="background-color: gray; border: 2px solid goldenrod; width: 450px; text-align: center;">
+  <h1 style="color: cadetblue;">Todo List</h1>
+
+  <input id="todoInput" placeholder="Enter items.." />
+  <br /><br />
+  <button onclick="addTodo()">Add Item</button>
+  <button onclick="deleteAllItems()">Delete All</button>
+
+  <ul id="list"></ul>
+
+  <script src="app.js"></script>
+</body>
 </html>

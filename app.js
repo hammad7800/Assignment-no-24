@@ -1,58 +1,47 @@
-var ulElement = document.getElementById("list");
+var list = document.getElementById("list");
+var database = firebase.database();
+var todoRef = database.ref("todos");
 
 function addTodo() {
   var input = document.getElementById("todoInput");
 
-  if (input.value) {
-    var liElement = document.createElement("li");
-
-    var liText = document.createTextNode(input.value);
-
-    liElement.appendChild(liText);
-
-    ulElement.appendChild(liElement);
-
-
-    var delBtnElement = document.createElement("button");
-
-    var delBtnText = document.createTextNode("Delete");
-
-    delBtnElement.appendChild(delBtnText);
-
-    liElement.appendChild(delBtnElement);
-
-    delBtnElement.setAttribute("onclick", "deleteSingleItem(this)");
-
-
-    var editBtnELement = document.createElement("button");
-
-    var editBtnText = document.createTextNode("Edit");
-
-    editBtnELement.appendChild(editBtnText);
-
-    editBtnELement.setAttribute("onclick", "editItem(this)");
-
-    liElement.appendChild(editBtnELement);
-
-    console.log(liElement);
-
-    input.value = "";
-  } else {
-    alert("fill the field..");
+  if (input.value === "") {
+    alert("fill the field");
+    return;
   }
+
+  todoRef.push({
+    value: input.value
+  });
+
+  input.value = "";
+}
+
+todoRef.on("child_added", function (data) {
+  var li = document.createElement("li");
+  li.id = data.key;
+
+  li.innerHTML = data.val().value + 
+    ' <button onclick="deleteItem(\'' + data.key + '\')">Delete</button>' +
+    ' <button onclick="editItem(\'' + data.key + '\')">Edit</button>';
+
+  list.appendChild(li);
+});
+
+function deleteItem(id) {
+  firebase.database().ref("todos/" + id).remove();
+  document.getElementById(id).remove();
 }
 
 function deleteAllItems() {
-  ulElement.innerHTML = "";
+  todoRef.remove();
+  list.innerHTML = "";
 }
 
-function deleteSingleItem(e) {
-  e.parentNode.remove();
-}
-
-function editItem(e) {
-  var updatedVal = prompt("Enter updated value..");
-
-
-  e.parentNode.firstChild.nodeValue = updatedVal;
+function editItem(id) {
+  var updatedVal = prompt("Enter updated value");
+  firebase.database().ref("todos/" + id).update({
+    value: updatedVal
+  });
+  document.getElementById(id).firstChild.nodeValue = updatedVal;
 }
